@@ -1,0 +1,31 @@
+name: Docker Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    name: Build image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.22'
+
+    - name: Login to GHCR
+      run: |
+        echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u flohansen --password-stdin
+
+    - name: Docker build
+      run: |
+        docker build -t ghcr.io/flohansen/kafka-random-producer:latest -f build/producer.Dockerfile .
+
+    - name: Docker push
+      run: |
+        docker push ghcr.io/flohansen/kafka-random-producer:latest
