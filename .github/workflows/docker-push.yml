@@ -20,7 +20,7 @@ jobs:
 
     - name: Login to GHCR
       run: |
-        echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u flohansen --password-stdin
+        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u flohansen --password-stdin
 
     - name: Docker build
       run: |
